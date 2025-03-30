@@ -6,7 +6,9 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-
+# Loading Data
+train_dataset = datasets.MNIST(root="data", download=True, train=True, transform=transforms.Compose([transforms.ToTensor()]))
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 # Create an instance of the image classifier model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 classifier= mnistModel().to(device)
