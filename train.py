@@ -27,7 +27,7 @@ def load_model(model_class, model_path, device):
     classifier = model_class().to(device)
     if Path(model_path).exists():
         try:
-            classifier.load_state_dict(torch.load(model_path))
+            classifier.load_state_dict(torch.load(model_path, map_location=device))
             print(f"Successfully loaded model from {model_path}")
         except Exception as e:
             print(f"Error loading model: {e}")
