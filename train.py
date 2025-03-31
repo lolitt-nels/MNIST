@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
     # Model, optimizer, and loss initialization
     classifier = load_model(
-        mnistModel, "modelState.pth", device
+        mnistModel, "weight/modelState.pth", device
     )  # Load the saved model
     optimizer = Adam(classifier.parameters(), lr=0.001)
     loss_fun = nn.CrossEntropyLoss()
