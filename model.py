@@ -11,20 +11,17 @@ from torch import nn,save,load
 class mnistModel(nn.Module):
     def __init__(self):
         super(mnistModel, self).__init__()
-        self.conv_layers = nn.Sequential(
-            nn.Conv2d(1, 32, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(32, 64, kernel_size=3),
-            nn.ReLU(),
-            nn.Conv2d(64, 64, kernel_size=3),
-            nn.ReLU()
-        )
-        self.fc_layers = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(64 * 22 * 22, 10)
-        )
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3)
+        self.fc1 = nn.Linear(64 * 5 * 5, 128)
+        self.fc2 = nn.Linear(128, 10)  # Only 10 digit classes
 
     def forward(self, x):
-        x = self.conv_layers(x)
-        x = self.fc_layers(x)
+        x = torch.relu(self.conv1(x))
+        x = nn.MaxPool2d(2)(x)
+        x = torch.relu(self.conv2(x))
+        x = nn.MaxPool2d(2)(x)
+        x = x.view(-1, 64 * 5 * 5)
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
         return x

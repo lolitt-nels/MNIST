@@ -9,16 +9,21 @@ from torchvision import datasets, transforms
 
 from model import mnistModel
 
-def load_and_preprocess_data(batch_size=32):
 
-    train_dataset = datasets.MNIST(
-        root="data",
-        download=True,
+def load_and_preprocess_data(batch_size=32):
+    train_data = datasets.EMNIST(
+        root="./data",
+        split="digits",
         train=True,
+        download=True,
         transform=transforms.Compose([transforms.ToTensor()]),
     )
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
+    train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
     return train_loader
+
+
+
 
 
 
@@ -37,8 +42,8 @@ def load_model(model_class, model_path, device):
 
 
 def train_model(classifier, train_loader, optimizer, loss_fun, device, epochs=10):
-   
-    for epoch in range(epochs):  
+
+    for epoch in range(epochs):
         for images, labels in train_loader:
             images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()  # Reset gradients
@@ -48,6 +53,7 @@ def train_model(classifier, train_loader, optimizer, loss_fun, device, epochs=10
             optimizer.step()  # Update weights
 
         print(f"Epoch:{epoch} loss is {loss.item()}")
+
 
 if __name__ == "__main__":
     # Device configuration
